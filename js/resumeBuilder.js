@@ -10,7 +10,7 @@ var bio = {
 	},
 	"pictureURL" : "/images/generic.jpg",
 	"message" : "Hi, thanks for taking the time to checkout my profile!",
-	"skills" : ['HTML', 'javascript', 'CSS', 'Git', 'Grunt'],
+	"skills" : ['HTML', 'javascript', 'CSS', 'Git', 'Grunt']
 }
 
 /* update HTML code with profile info */
@@ -48,42 +48,50 @@ if ( bio.skills.length > 0 ){
 	} // end for
 } // end if
 
-/* work object using dot .notation */
-var work = {}; // declare variable
+// create work object to hold employment details
+var work = {
+	"jobs" : [  { "employer" : "example 1 employer",
+						"title" : "example title",
+						"dates" : "example 2013 - 2016",
+						"location" : "example city, country",
+						"description" : "example description, example description,example description,example description,example description,example description."		
+						},
+				 { "employer" : "example 2 employer",
+						"title" : "example title",
+						"dates" : "example 2010 - 2012",
+						"location" : "example city, country",
+						"description" : "example description, example description,example description,example description,example description,example description."		
+						},
+				 { "employer" : "example 3 employer",
+						"title" : "example title",
+						"dates" : "example 205 - 2009",
+						"location" : "example city, country",
+						"description" : "example description, example description,example description,example description,example description,example description."		
+						}				
+	]
+}
 
-work.position[0] = "example position";
-work.employer[0] = "example employer";
-work.title[0] = "example title";
-work.dates[0] = "example 2012 - 2015";
-work.location[0] = "example city, country";
-work.description[0] = "example description example description example description example description example description";
-
-work.position[1] = "example position";
-work.employer[1] = "example employer";
-work.title[1] = "example title";
-work.dates[1] = "example 2012 - 2015";
-work.location[1] = "example city, country";
-work.description[1] = "example description example description example description example description example description";
-
-work.position[2] = "example position";
-work.employer[2] = "example employer";
-work.title[2] = "example title";
-work.dates[2] = "example 2012 - 2015";
-work.location[2] = "example city, country";
-work.description[2] = "example description example description example description example description example description";
-
-
-/* update HTML code with employment info */
-var formattedEmployer = HTMLworkEmployer.replace("%data%", work["employer"]);
-var formattedTitle = HTMLworkTitle.replace("%data%", work['title']);
-var formattedYears = HTMLworkDates.replace("%data%", work['years']);
-var formattedLocation = HTMLworkLocation.replace("%data%", work['city']);
-
-/* display some work history */
-$("#workExperience").append(HTMLworkStart);
-$("#workExperience").append(formattedEmployer + formattedTitle);/* if these variables are appended seperately the <a> link breaks for some reason. */
-$("#workExperience").append(formattedYears);
-$("#workExperience").append(formattedLocation);
+// loop through jobs array in work object, retrieve job objects info and display in html
+for (job in work.jobs){	
+	// 
+	if(work.jobs.hasOwnProperty(job)){
+		// update HTML code with employment info and display
+		var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
+		var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
+		var formattedDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
+		var formattedLocation = HTMLworkLocation.replace("%data%", work.jobs[job].location);
+		var formattedWorkDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
+		
+		// concat these two variables otherwise the html <a> tag breaks for some reason
+		var formattedEmployerTitle = formattedEmployer + formattedTitle;
+		
+		$("#workExperience").append(HTMLworkStart);// create new div for job
+		$(".work-entry:last").append(formattedEmployerTitle);
+		$(".work-entry:last").append(formattedDates);
+		$(".work-entry:last").append(formattedWorkDescription);
+		$(".work-entry:last").append(formattedLocation);
+	}// end if hasOwnProperty
+}// end for job in
 
 // education object using bracket notation 
 var education = {}; // declare variable
