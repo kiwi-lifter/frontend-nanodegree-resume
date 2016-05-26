@@ -30,8 +30,8 @@ var HTMLskillsStart = '<h3 id="skills-h3">Skills at a Glance:</h3><ul id="skills
 var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
 
 var HTMLworkStart = '<div class="work-entry"></div>';
-var HTMLworkEmployer = '<a href="#">%data%';
-var HTMLworkTitle = ' - %data%</a>';
+var HTMLworkEmployer = '<a>%data%';
+var HTMLworkTitle = ' - %data% </a>';
 var HTMLworkDates = '<div class="date-text">%data%</div>';
 var HTMLworkLocation = '<div class="location-text">%data%</div>';
 var HTMLworkDescription = '<p><br>%data%</p>';
@@ -70,6 +70,14 @@ $(document).ready(function() {
   });
 });
 
+//function that internationalises name
+function inName(name) {
+	name = name.trim().split(" ");
+	name[1] = name[1].toUpperCase();
+	name[0] = name[0].slice(0,1).toUpperCase() + name[0].slice(1).toLowerCase();
+	
+	return name[0] +" "+name[1];
+}
 /*
 The next few lines about clicks are for the Collecting Click Locations quiz in Lesson 2.
 */
