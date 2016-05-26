@@ -1,4 +1,6 @@
- /* profile info object */
+var displayWork = function(){
+
+/* profile info object */
 var bio = {
 	"name" : "Garrick McCaskill",
 	"role" : "Front End Developer",
@@ -48,7 +50,7 @@ if ( bio.skills.length > 0 ){
 	} // end for
 } // end if
 
-// create work object to hold employment details
+// create work object for employment details
 var work = {
 	"jobs" : [  { "employer" : "example 1 employer",
 						"title" : "example title",
@@ -64,23 +66,22 @@ var work = {
 						},
 				 { "employer" : "example 3 employer",
 						"title" : "example title",
-						"dates" : "example 205 - 2009",
+						"dates" : "example 2005 - 2009",
 						"location" : "example city, country",
 						"description" : "example description, example description,example description,example description,example description,example description."		
 						}				
-	]
-}
+	]// end jobs array
+} // end work object
 
 // loop through jobs array in work object, retrieve job objects info and display in html
-for (job in work.jobs){	
-	// 
-	if(work.jobs.hasOwnProperty(job)){
+work.jobs.forEach(function(job) {	
+	
 		// update HTML code with employment info and display
-		var formattedEmployer = HTMLworkEmployer.replace("%data%", work.jobs[job].employer);
-		var formattedTitle = HTMLworkTitle.replace("%data%", work.jobs[job].title);
-		var formattedDates = HTMLworkDates.replace("%data%", work.jobs[job].dates);
-		var formattedLocation = HTMLworkLocation.replace("%data%", work.jobs[job].location);
-		var formattedWorkDescription = HTMLworkDescription.replace("%data%", work.jobs[job].description);
+		var formattedEmployer = HTMLworkEmployer.replace("%data%", job.employer);
+		var formattedTitle = HTMLworkTitle.replace("%data%", job.title);
+		var formattedDates = HTMLworkDates.replace("%data%", job.dates);
+		var formattedLocation = HTMLworkLocation.replace("%data%", job.location);
+		var formattedWorkDescription = HTMLworkDescription.replace("%data%", job.description);
 		
 		// concat these two variables otherwise the html <a> tag breaks for some reason
 		var formattedEmployerTitle = formattedEmployer + formattedTitle;
@@ -88,55 +89,136 @@ for (job in work.jobs){
 		$("#workExperience").append(HTMLworkStart);// create new div for job
 		$(".work-entry:last").append(formattedEmployerTitle);
 		$(".work-entry:last").append(formattedDates);
-		$(".work-entry:last").append(formattedWorkDescription);
 		$(".work-entry:last").append(formattedLocation);
-	}// end if hasOwnProperty
-}// end for job in
+		$(".work-entry:last").append(formattedWorkDescription);
+	
+});// end for job in
 
-// education object using bracket notation 
-var education = {}; // declare variable
-education["institute"] = "University of Technology";
-education["degree"] = "Bachelor Landscape Architecture";
-education["year"] = "2015";
-education["city"] = "Auckland, New Zealand";
-education["major"] = "Urban Design";
+// create projects object for projects details
+var projects = {
+	"projects" : [ { "title" : "example 1 project",
+						"dates" : "2016",
+						"description" : "Udacity Front End Web Developer nano degree - portfolio.",
+						"images" : [ "/images/project1a.jpg", "/images/project1b.jpg"]
+					},
+					{ "title" : "example 2 project",
+						"dates" : "2015",
+						"description" : "Udacity Front End Web Developer nano degree - resume.",
+						"images" : [ "/images/project1a.jpg", "/images/project1b.jpg"]
+					}
+	]
+} // end projects object
 
-/*
+// loop through projects for project info
+projects.projects.forEach(function(project){
+
+		//update HTML code with projects info and display
+		var formattedTitle = HTMLprojectTitle.replace("%data%", project.title);
+		var formattedDates = HTMLprojectDates.replace("%data%", project.dates);
+		var formattedDescription = HTMLprojectDescription.replace("%data%", project.description);
+			
+		$("#projects").append(HTMLprojectStart);
+		$(".project-entry:last").append(formattedTitle);
+		$(".project-entry:last").append(formattedDates);
+		$(".project-entry:last").append(formattedDescription);
+		
+		// get number of images in array
+		var imagesLength = project.images.length;
+		// loop through images array update and display images ul
+		for (i = 0; i < imagesLength; i++) {
+			// update HTML code with projects info and display
+			var projectImages = HTMLprojectImage.replace("%data%", project.images);
+			$(".project-entry:last").append(projectImages);
+		}// end for	
+});// end forEach
+
+// create education info object
 var education = {
 	"institutes": [
-	{
-		"name": "Unitec Institute of Technology",
-		"degree": "Bachelor of Landscape Architecture",
-		"year": "2015",
-		"city": "Auckland",
-		"major": "Landscape Architecture"
-	}, 
-	{
-		"name": "Auckland University",
-		"degree": "Bachelor of Arts",
-		"year": "1992 - 1996",
-		"city": "Auckland",
-		"major": "Political Studies"
-	}
+		{
+			"name": "Unitec Institute of Technology",
+			"location": "Auckland, New Zealand",
+			"degree": "1st Year Bachelor of Landscape Architecture",
+			"majors": "Landscape Architecture",
+			"dates": "2015",
+			"url" : "http://www.unitec.ac.nz/career-and-study-options/landscape-architecture"
+		}, 
+		{
+			"name": "Auckland University",
+			"location": "Auckland, New Zealand",
+			"degree": "Bachelor of Arts",
+			"majors": "Political Studies",
+			"dates": "1992 - 1996",
+			"url" : "http://www.arts.auckland.ac.nz/en/about/subjects-and-courses/politics-and-international-relations.html"
+		}
+	],
+	"onlineCourses": [
+		{
+			"title": "Front End Developer Nano Degree",
+			"school": "Udacity.com",
+			"dates": "2016",
+			"url": "https://www.udacity.com/course/front-end-web-developer-nanodegree--nd001"
+		},
+		{
+			"title": "example 1",
+			"school": "example 1",
+			"dates": "2015",
+			"url": "https://www.example.com"
+		}
 	]
 }
-*/
 
-/* display education history */
-var formattedInstitute = HTMLschoolName.replace("%data%", education.institute);
-var formattedDegree = HTMLschoolDegree.replace("%data", education.degree);
-var formattedDates = HTMLschoolDates.replace("%data%", education.year);
-var formattedLocation = HTMLschoolLocation.replace("%data%", education.city);
-var formattedMajor = HTMLschoolMajor.replace("%data%", education.major);
+// loop through institutes array in education object, retrieve institute objects info and display in html
+education.institutes.forEach(function(institute) {
+		
+		// display education history 
+		var formattedInstitute = HTMLschoolName.replace("%data%", institute.name);
+		var formattedDegree = HTMLschoolDegree.replace("%data%", institute.degree);
+		var formattedDates = HTMLschoolDates.replace("%data%", institute.dates);
+		var formattedLocation = HTMLschoolLocation.replace("%data%", institute.location);
+		var formattedMajor = HTMLschoolMajor.replace("%data%", institute.majors);
 
-$("#education").append(HTMLschoolStart);
-$("#education").append(formattedInstitute + formattedDegree);
-$("#education").append(formattedDates);
-$("#education").append(formattedLocation);
-$("#education").append(formattedMajor);
+		$("#education").append(HTMLschoolStart);
+		$(".education-entry:last").append(formattedInstitute + formattedDegree);
+		$(".education-entry:last").append(formattedDates);
+		$(".education-entry:last").append(formattedLocation);
+		$(".education-entry:last").append(formattedMajor);
+	
+}); // end forEach
+
+// check if there are any online courses in the object...
+if(education.hasOwnProperty('onlineCourses')){
+	// ...if there is add the online courses html header
+	$("#education").append(HTMLonlineClasses);
+	// loop through onlineCourses array in education object, retrieve school objects info, update and display html
+	education.onlineCourses.forEach(function(course){
+		
+			// display online courses history 
+			var formattedTitle = HTMLonlineTitle.replace("%data%", course.title);
+			var formattedSchool = HTMLonlineSchool.replace("%data%", course.school);
+			var formattedDates = HTMLonlineDates.replace("%data%", course.dates);
+			var formattedURL = HTMLonlineURL.replace("%data%", course.url);
+			
+			$("#education").append(HTMLschoolStart);
+			$(".education-entry:last").append(formattedTitle + formattedSchool);
+			$(".education-entry:last").append(formattedDates);
+			$(".education-entry:last").append(formattedURL);
+
+	});// end forEach
+}// end if hasOwnProperty
+
+ 
+// add button to internationalise name
+$("#main").prepend(internationalizeButton);
+
+//function that internationalises name
+inName("Garrick McCaskill") === "Garrick MCCASKILL";
 
 
+}// displayWork function
 
+// display resume HTML
+displayWork();
 
 
 
