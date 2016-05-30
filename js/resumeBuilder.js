@@ -1,6 +1,4 @@
-var displayWork = function(){
-
-/* profile info object */
+/* bio info object */
 var bio = {
 	"name" : "Garrick McCaskill",
 	"role" : "Front End Developer",
@@ -12,45 +10,46 @@ var bio = {
 	},
 	"pictureURL" : "/images/generic.jpg",
 	"message" : "Hi, thanks for taking the time to checkout my profile!",
-	"skills" : ['HTML', 'javascript', 'CSS', 'Git', 'Grunt']
-}
+	"skills" : ['HTML', 'javascript', 'CSS', 'Git', 'Grunt'],
+	"display" : function(){
+		/* update HTML code with profile info */
+		var formattedName = HTMLheaderName.replace("%data%", bio.name);
+		var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
+		var mobileNum = HTMLmobile.replace("%data%", bio.contacts.mobile);
+		var emailContact = HTMLemail.replace("%data%", bio.contacts.email);
+		var gitHub = HTMLgithub.replace("%data%", bio.contacts.gitHubName);
+		var locationPoint = HTMLlocation.replace("%data%", bio.contacts.locationPoint);
+		var profilePic = HTMLbioPic.replace("%data%", bio.pictureURL);
+		var message = HTMLwelcomeMsg.replace("%data%", bio.message);
+		var mySkills = HTMLskills.replace("%data%", bio.skills);
 
-/* update HTML code with profile info */
-var formattedName = HTMLheaderName.replace("%data%", bio.name);
-var formattedRole = HTMLheaderRole.replace("%data%", bio.role);
-var mobileNum = HTMLmobile.replace("%data%", bio.contacts.mobile);
-var emailContact = HTMLemail.replace("%data%", bio.contacts.email);
-var gitHub = HTMLgithub.replace("%data%", bio.contacts.gitHubName);
-var locationPoint = HTMLlocation.replace("%data%", bio.contacts.locationPoint);
-var profilePic = HTMLbioPic.replace("%data%", bio.pictureURL);
-var message = HTMLwelcomeMsg.replace("%data%", bio.message);
-var mySkills = HTMLskills.replace("%data%", bio.skills);
+		/* display profile info */
+		$("#header").prepend(formattedRole);
+		$("#header").prepend(formattedName);
+		$("#header").append(profilePic);
+		$("#header").append(message);
 
-/* display profile info */
-$("#header").prepend(formattedRole);
-$("#header").prepend(formattedName);
-$("#header").append(profilePic);
-$("#header").append(message);
+		$("#topContacts").append(mobileNum);
+		$("#topContacts").append(emailContact);
+		$("#topContacts").append(gitHub);
+		$("#topContacts").append(locationPoint);
 
-$("#topContacts").append(mobileNum);
-$("#topContacts").append(emailContact);
-$("#topContacts").append(gitHub);
-$("#topContacts").append(locationPoint);
+		// if there are any skills 
+		if ( bio.skills.length > 0 ){
+			// append skills starter html
+			$("#header").append(HTMLskillsStart);
+			// get number of skills in skills array
+			var skillsLength = bio.skills.length;
+			// loop through skills array, update and display skills ul
+			for (i = 0; i < skillsLength; i++) {
+				var mySkills = HTMLskills.replace("%data%", bio.skills[i]);
+				$("#skills").append(mySkills);
+			} // end for
+		} // end if
+	} //end display function
+} // end bio object
 
-// if there are any skills 
-if ( bio.skills.length > 0 ){
-	// append skills starter html
-	$("#header").append(HTMLskillsStart);
-	// get number of skills in skills array
-	var skillsLength = bio.skills.length;
-	// loop through skills array, update and display skills ul
-	for (i = 0; i < skillsLength; i++) {
-		var mySkills = HTMLskills.replace("%data%", bio.skills[i]);
-		$("#skills").append(mySkills);
-	} // end for
-} // end if
-
-// create work object for employment details
+// employment history object
 var work = {
 	"jobs" : [  { "employer" : "example 1 employer",
 						"title" : "example title",
@@ -70,67 +69,70 @@ var work = {
 						"location" : "example city, country",
 						"description" : "example description, example description,example description,example description,example description,example description."		
 						}				
-	]// end jobs array
+	],// end jobs array
+	"display" : function(){
+		// loop through jobs array in work object, retrieve job objects info and display in html
+		work.jobs.forEach(function(job) {	
+	
+			// update HTML code with employment info and display
+			var formattedEmployer = HTMLworkEmployer.replace("%data%", job.employer);
+			var formattedTitle = HTMLworkTitle.replace("%data%", job.title);
+			var formattedDates = HTMLworkDates.replace("%data%", job.dates);
+			var formattedLocation = HTMLworkLocation.replace("%data%", job.location);
+			var formattedWorkDescription = HTMLworkDescription.replace("%data%", job.description);
+			
+			// concat these two variables otherwise the html <a> tag breaks for some reason
+			var formattedEmployerTitle = formattedEmployer + formattedTitle;
+			
+			$("#workExperience").append(HTMLworkStart);// create new div for job
+			$(".work-entry:last").append(formattedEmployerTitle);
+			$(".work-entry:last").append(formattedDates);
+			$(".work-entry:last").append(formattedLocation);
+			$(".work-entry:last").append(formattedWorkDescription);
+	
+		});// end for job in
+	}// end display function
 } // end work object
-
-// loop through jobs array in work object, retrieve job objects info and display in html
-work.jobs.forEach(function(job) {	
-	
-		// update HTML code with employment info and display
-		var formattedEmployer = HTMLworkEmployer.replace("%data%", job.employer);
-		var formattedTitle = HTMLworkTitle.replace("%data%", job.title);
-		var formattedDates = HTMLworkDates.replace("%data%", job.dates);
-		var formattedLocation = HTMLworkLocation.replace("%data%", job.location);
-		var formattedWorkDescription = HTMLworkDescription.replace("%data%", job.description);
-		
-		// concat these two variables otherwise the html <a> tag breaks for some reason
-		var formattedEmployerTitle = formattedEmployer + formattedTitle;
-		
-		$("#workExperience").append(HTMLworkStart);// create new div for job
-		$(".work-entry:last").append(formattedEmployerTitle);
-		$(".work-entry:last").append(formattedDates);
-		$(".work-entry:last").append(formattedLocation);
-		$(".work-entry:last").append(formattedWorkDescription);
-	
-});// end for job in
 
 // create projects object for projects details
 var projects = {
 	"projects" : [ { "title" : "example 1 project",
 						"dates" : "2016",
 						"description" : "Udacity Front End Web Developer nano degree - portfolio.",
-						"images" : [ "/images/project1a.jpg", "/images/project1b.jpg"]
+						"images" : [ "/images/projectA.jpg", "/images/projectB.jpg"]
 					},
 					{ "title" : "example 2 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
-						"images" : [ "/images/project1a.jpg", "/images/project1b.jpg"]
+						"images" : [ "/images/projectA.jpg", "/images/projectB.jpg"]
 					}
-	]
-} // end projects object
+	],
+	"display" : function display(){
+		// loop through projects for project info
+		projects.projects.forEach(function(project){
 
-// loop through projects for project info
-projects.projects.forEach(function(project){
-
-		//update HTML code with projects info and display
-		var formattedTitle = HTMLprojectTitle.replace("%data%", project.title);
-		var formattedDates = HTMLprojectDates.replace("%data%", project.dates);
-		var formattedDescription = HTMLprojectDescription.replace("%data%", project.description);
+			//update HTML code with projects info and display
+			var formattedTitle = HTMLprojectTitle.replace("%data%", project.title);
+			var formattedDates = HTMLprojectDates.replace("%data%", project.dates);
+			var formattedDescription = HTMLprojectDescription.replace("%data%", project.description);
+				
+			$("#projects").append(HTMLprojectStart);
+			$(".project-entry:last").append(formattedTitle);
+			$(".project-entry:last").append(formattedDates);
+			$(".project-entry:last").append(formattedDescription);
 			
-		$("#projects").append(HTMLprojectStart);
-		$(".project-entry:last").append(formattedTitle);
-		$(".project-entry:last").append(formattedDates);
-		$(".project-entry:last").append(formattedDescription);
+			// get number of images in array
+			var imagesLength = project.images.length;
+			// loop through images array update and display images ul
+			for (i = 0; i < imagesLength; i++) {
+				// update HTML code with projects info and display
+				var projectImages = HTMLprojectImage.replace("%data%", project.images[i]);
+				$(".project-entry:last").append(projectImages);
+			}// end for	
+		});// end forEach
 		
-		// get number of images in array
-		var imagesLength = project.images.length;
-		// loop through images array update and display images ul
-		for (i = 0; i < imagesLength; i++) {
-			// update HTML code with projects info and display
-			var projectImages = HTMLprojectImage.replace("%data%", project.images);
-			$(".project-entry:last").append(projectImages);
-		}// end for	
-});// end forEach
+	}// end display function
+} // end projects object
 
 // create education info object
 var education = {
@@ -165,60 +167,56 @@ var education = {
 			"dates": "2015",
 			"url": "https://www.example.com"
 		}
-	]
-}
-
-// loop through institutes array in education object, retrieve institute objects info and display in html
-education.institutes.forEach(function(institute) {
+	],
+	"display" : function(){
+		// loop through institutes array in education object, retrieve institute objects info and display in html
+		education.institutes.forEach(function(institute) {
 		
-		// display education history 
-		var formattedInstitute = HTMLschoolName.replace("%data%", institute.name);
-		var formattedDegree = HTMLschoolDegree.replace("%data%", institute.degree);
-		var formattedDates = HTMLschoolDates.replace("%data%", institute.dates);
-		var formattedLocation = HTMLschoolLocation.replace("%data%", institute.location);
-		var formattedMajor = HTMLschoolMajor.replace("%data%", institute.majors);
+			// display education history 
+			var formattedInstitute = HTMLschoolName.replace("%data%", institute.name);
+			var formattedDegree = HTMLschoolDegree.replace("%data%", institute.degree);
+			var formattedDates = HTMLschoolDates.replace("%data%", institute.dates);
+			var formattedLocation = HTMLschoolLocation.replace("%data%", institute.location);
+			var formattedMajor = HTMLschoolMajor.replace("%data%", institute.majors);
 
-		$("#education").append(HTMLschoolStart);
-		$(".education-entry:last").append(formattedInstitute + formattedDegree);
-		$(".education-entry:last").append(formattedDates);
-		$(".education-entry:last").append(formattedLocation);
-		$(".education-entry:last").append(formattedMajor);
-	
-}); // end forEach
-
-// check if there are any online courses in the object...
-if(education.hasOwnProperty('onlineCourses')){
-	// ...if there is add the online courses html header
-	$("#education").append(HTMLonlineClasses);
-	// loop through onlineCourses array in education object, retrieve school objects info, update and display html
-	education.onlineCourses.forEach(function(course){
-		
-			// display online courses history 
-			var formattedTitle = HTMLonlineTitle.replace("%data%", course.title);
-			var formattedSchool = HTMLonlineSchool.replace("%data%", course.school);
-			var formattedDates = HTMLonlineDates.replace("%data%", course.dates);
-			var formattedURL = HTMLonlineURL.replace("%data%", course.url);
-			
 			$("#education").append(HTMLschoolStart);
-			$(".education-entry:last").append(formattedTitle + formattedSchool);
+			$(".education-entry:last").append(formattedInstitute + formattedDegree);
 			$(".education-entry:last").append(formattedDates);
-			$(".education-entry:last").append(formattedURL);
+			$(".education-entry:last").append(formattedLocation);
+			$(".education-entry:last").append(formattedMajor);
+		
+		}); // end forEach
 
-	});// end forEach
-}// end if hasOwnProperty
+		// check if there are any online courses in the object...
+		if(education.hasOwnProperty('onlineCourses')){
+			// ...if there is add the online courses html header
+			$("#education").append(HTMLonlineClasses);
+			// loop through onlineCourses array in education object, retrieve school objects info, update and display html
+			education.onlineCourses.forEach(function(course){
+		
+				// display online courses history 
+				var formattedTitle = HTMLonlineTitle.replace("%data%", course.title);
+				var formattedSchool = HTMLonlineSchool.replace("%data%", course.school);
+				var formattedDates = HTMLonlineDates.replace("%data%", course.dates);
+				var formattedURL = HTMLonlineURL.replace("%data%", course.url);
+				
+				$("#education").append(HTMLschoolStart);
+				$(".education-entry:last").append(formattedTitle + formattedSchool);
+				$(".education-entry:last").append(formattedDates);
+				$(".education-entry:last").append(formattedURL);
 
- 
-// add button to internationalise name
-$("#main").prepend(internationalizeButton);
+			});// end forEach
+		}// end if hasOwnProperty
+	} //end function display
+} //end education object
 
-//function that internationalises name
-inName("Garrick McCaskill") === "Garrick MCCASKILL";
+// call display functions for each resume section
+bio.display();
+work.display();
+projects.display();
+education.display();
 
 
-}// displayWork function
-
-// display resume HTML
-displayWork();
 
 
 
