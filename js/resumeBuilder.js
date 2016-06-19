@@ -8,9 +8,9 @@ var bio = {
 		"gitHubName" : "kiwi-lifter",
 		"locationPoint" : "Auckland, New Zealand"
 	},
-	"pictureURL" : "/images/generic.jpg",
+	"pictureURL" : "http://placehold.it/200x200",
 	"message" : "Hi, thanks for taking the time to checkout my profile!",
-	"skills" : ['HTML', 'javascript', 'CSS', 'Git', 'Grunt'],
+	"skills" : ["HTML", "javascript", "CSS", "Git", "Grunt"],
 	"display" : function(){
 		/* update HTML code with profile info */
 		var formattedName = HTMLheaderName.replace("%data%", bio.name);
@@ -71,24 +71,31 @@ var work = {
 						}				
 	],// end jobs array
 	"display" : function(){
+		
+		// create number to add unique #id for collapse targets in jobs list
+		var i=0;
 		// loop through jobs array in work object, retrieve job objects info and display in html
 		work.jobs.forEach(function(job) {	
-	
+			
+			// increment i by 1
+			i++; 
+			
 			// update HTML code with employment info and display
-			var formattedEmployer = HTMLworkEmployer.replace("%data%", job.employer);
+			var formattedEmployer = '<a data-toggle="collapse" href="#job'+i+'" class="hvr-underline-from-left" aria-expanded="false" aria-controls="job info">'+job.employer;
 			var formattedTitle = HTMLworkTitle.replace("%data%", job.title);
-			var formattedDates = HTMLworkDates.replace("%data%", job.dates);
+			var formattedDates = '<div id="job'+i+'" class="collapse text-left">'+HTMLworkDates.replace("%data%", job.dates);
 			var formattedLocation = HTMLworkLocation.replace("%data%", job.location);
 			var formattedWorkDescription = HTMLworkDescription.replace("%data%", job.description);
+			var endJobDiv = '</div><!-- end job'+i+' div -->';
 			
 			// concat these two variables otherwise the html <a> tag breaks for some reason
 			var formattedEmployerTitle = formattedEmployer + formattedTitle;
-			
+			// same issue as above, target <div> breaks if not concatanated first
+			var formattedCollapseInfo = formattedDates+formattedLocation+formattedWorkDescription+endJobDiv;
+					
 			$("#workExperience").append(HTMLworkStart);// create new div for job
 			$(".work-entry:last").append(formattedEmployerTitle);
-			$(".work-entry:last").append(formattedDates);
-			$(".work-entry:last").append(formattedLocation);
-			$(".work-entry:last").append(formattedWorkDescription);
+			$(".work-entry:last").append(formattedCollapseInfo);
 	
 		});// end for job in
 	}// end display function
@@ -96,46 +103,79 @@ var work = {
 
 // create projects object for projects details
 var projects = {
-	"projects" : [ { "title" : "example 1 project",
+	"projects" :[	{ 	"title" : "example 1 project",
 						"dates" : "2016",
 						"description" : "Udacity Front End Web Developer nano degree - portfolio.",
-						"images" : [ "/images/projectA.jpg", "/images/projectB.jpg"]
+						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
+											"small" : "http://placehold.it/125x125"
+										}
+									]
 					},
-					{ "title" : "example 2 project",
+					{ 	"title" : "example 2 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
-						"images" : [ "/images/projectA.jpg", "/images/projectB.jpg"]
+						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
+											"small" : "http://placehold.it/125x125"
+										}
+									]
 					}
 	],
 	"display" : function display(){
-		// loop through projects for project info
-		projects.projects.forEach(function(project){
-
-			//update HTML code with projects info and display
-			var formattedTitle = HTMLprojectTitle.replace("%data%", project.title);
-			var formattedDates = HTMLprojectDates.replace("%data%", project.dates);
-			var formattedDescription = HTMLprojectDescription.replace("%data%", project.description);
-				
-			$("#projects").append(HTMLprojectStart);
-			$(".project-entry:last").append(formattedTitle);
-			$(".project-entry:last").append(formattedDates);
-			$(".project-entry:last").append(formattedDescription);
 			
-			// get number of images in array
-			var imagesLength = project.images.length;
-			// loop through images array update and display images ul
-			for (i = 0; i < imagesLength; i++) {
-				// update HTML code with projects info and display
-				var projectImages = HTMLprojectImage.replace("%data%", project.images[i]);
+		// track project for modal div id targets
+		var countProjects = 0;
+		
+		// get details for each project and display
+		projects.projects.forEach(function(project){	
+			
+			// project modal div id number incremented by 1
+			countProjects++;
+				
+			// display project link button and small image
+			// html for project button 
+			var projectButton = '<div class="project-btn-holder"><button type="button" class="project-btn" data-toggle="modal" data-target="#project'+countProjects+'">'+project.title+'</button></div>';
+			// display html		
+			$("#projects").append(HTMLprojectStart);
+			$(".project-entry:last").append(projectButton);	
+		
+			// get url for small image from images array
+			project.images.forEach(function(image){
+				// get small image url and html for projects list
+				var projectImages = HTMLprojectImage.replace("%data%", image.small);
 				$(".project-entry:last").append(projectImages);
-			}// end for	
-		});// end forEach
+			}); //end forEach images small
+				
+			
+			// var to hold large images url link
+			var projectLargeImages ="";
+			// display project modal with title, date, description, 2 large images
+			project.images.forEach(function(image){
+				var imagesLength = image.large.length;
+				var count;
+				// loop through large images array 
+				for (count = 0; count < imagesLength; count++) {
+					// create html img tags with urls from the large images array
+					projectLargeImages = projectLargeImages + '<img src="' + image.large[count] + '">';					
+				}// end for
+			}); // end forEach images large
+			
+			// html content for project modal
+			var modalStart = '<div id="project'+countProjects+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="project '+countProjects+'" aria-hidden="true">';
+			var modalTitleAndCloseButton = '<div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="gridModalLabel">'+project.title+'</h4></div>';
+			var modalContent = '<div class="modal-body"><div class="container-fluid bd-example-row"><div class="row"><div class="col-md-8"><p>'+project.dates+'</p><p>'+project.description+'</p></div><div class="col-md-4">'+projectLargeImages+'</div></div></div></div>';
+			var modalEnd = '<div class="modal-footer"><button type="button" class="close-button" data-dismiss="modal">Close</button></div></div></div></div><!-- end bootstrap modal div for project '+countProjects+'-->';
+			// append project modals html
+			$(".container").prepend(modalStart+modalTitleAndCloseButton+modalContent+modalEnd);
+		
+		});// end forEach project 
 		
 	}// end display function
+		
 } // end projects object
 
 // create education info object
-var education = {
+
+var education = {	
 	"institutes": [
 		{
 			"name": "Unitec Institute of Technology",
@@ -163,27 +203,35 @@ var education = {
 		},
 		{
 			"title": "example 1",
-			"school": "example 1",
-			"dates": "2015",
+			"school": "example 1 institute",
+			"dates": "example 1 date",
 			"url": "https://www.example.com"
 		}
 	],
 	"display" : function(){
+		
+		// create number to add unique #id for collapse targets in institutes list
+		var i=0;
+	
 		// loop through institutes array in education object, retrieve institute objects info and display in html
 		education.institutes.forEach(function(institute) {
 		
+			// increment i by 1
+			i++; 
 			// display education history 
-			var formattedInstitute = HTMLschoolName.replace("%data%", institute.name);
+			var formattedInstitute = '<a data-toggle="collapse" href="#institute'+i+'" class="hvr-underline-from-left" aria-expanded="false" aria-controls="education institute info">'+institute.name;
 			var formattedDegree = HTMLschoolDegree.replace("%data%", institute.degree);
-			var formattedDates = HTMLschoolDates.replace("%data%", institute.dates);
+			var formattedDates = '<div id="institute'+i+'" class="collapse">'+HTMLschoolDates.replace("%data%", institute.dates);
 			var formattedLocation = HTMLschoolLocation.replace("%data%", institute.location);
 			var formattedMajor = HTMLschoolMajor.replace("%data%", institute.majors);
+			var endInstituteDiv = '</div><!-- end institute'+i+' div -->';
 
+			// target <div> breaks if not concatanated first
+			var formattedInstituteCollapseInfo = formattedDates+formattedLocation+formattedMajor+endInstituteDiv;
+			
 			$("#education").append(HTMLschoolStart);
-			$(".education-entry:last").append(formattedInstitute + formattedDegree);
-			$(".education-entry:last").append(formattedDates);
-			$(".education-entry:last").append(formattedLocation);
-			$(".education-entry:last").append(formattedMajor);
+			$(".education-entry:last").append(formattedInstitute + formattedDegree);// append vars together else HTML <a> link breaks
+			$(".education-entry:last").append(formattedInstituteCollapseInfo);
 		
 		}); // end forEach
 
@@ -191,26 +239,31 @@ var education = {
 		if(education.hasOwnProperty('onlineCourses')){
 			// ...if there is add the online courses html header
 			$("#education").append(HTMLonlineClasses);
+			
+			// create number to add unique #id for collapse targets in online courses list
+			var i=0;
 			// loop through onlineCourses array in education object, retrieve school objects info, update and display html
 			education.onlineCourses.forEach(function(course){
-		
+				
+				// increment i by 1
+				i++;
 				// display online courses history 
-				var formattedTitle = HTMLonlineTitle.replace("%data%", course.title);
+				var formattedTitle = '<a data-toggle="collapse" href="#course'+i+'" class="hvr-underline-from-left" aria-expanded="false" aria-controls="online courses info">'+course.title;
 				var formattedSchool = HTMLonlineSchool.replace("%data%", course.school);
-				var formattedDates = HTMLonlineDates.replace("%data%", course.dates);
+				var formattedDates = '<div id="course'+i+'" class="collapse">'+HTMLonlineDates.replace("%data%", course.dates);
 				var formattedURL = HTMLonlineURL.replace("%data%", course.url);
+				var endCourseDiv = '</div><!-- end course'+i+' div -->';
 				
 				$("#education").append(HTMLschoolStart);
-				$(".education-entry:last").append(formattedTitle + formattedSchool);
-				$(".education-entry:last").append(formattedDates);
-				$(".education-entry:last").append(formattedURL);
+				$(".education-entry:last").append(formattedTitle + formattedSchool); // concatenate vars to avoid HTML breaks
+				$(".education-entry:last").append(formattedDates + formattedURL + endCourseDiv); // concatenate vars to avoid HTML breaks
 
 			});// end forEach
 		}// end if hasOwnProperty
 	} //end function display
 } //end education object
 
-// call display functions for each resume section
+// call object display functions for each resume section
 bio.display();
 work.display();
 projects.display();
