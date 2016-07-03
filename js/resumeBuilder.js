@@ -52,7 +52,7 @@ var bio = {
 // employment history object
 var work = {
 	"jobs" : [  { "employer" : "example 1 employer",
-						"title" : "example title",
+					"title" : "example title",
 						"dates" : "example 2013 - 2016",
 						"location" : "example city, country",
 						"description" : "example description, example description,example description,example description,example description,example description."		
