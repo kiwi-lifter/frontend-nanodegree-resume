@@ -53,21 +53,21 @@ var work = {
 	"jobs" : [  { "employer" : "example 1 employer",
 						"title" : "example title",
 						"dates" : "example 2013 - 2016",
-						"location" : "example city, country",
+						"location" : "Tokyo, Japan",
 						"description" : "example description, example description,example description," + 
 							"example description,example description,example description."		
 						},
 				 { "employer" : "example 2 employer",
 						"title" : "example title",
 						"dates" : "example 2010 - 2012",
-						"location" : "example city, country",
+						"location" : "Seoul, South Korea",
 						"description" : "example description, example description,example description," + 
 							"example description,example description,example description."		
 						},
 				 { "employer" : "example 3 employer",
 						"title" : "example title",
 						"dates" : "example 2005 - 2009",
-						"location" : "example city, country",
+						"location" : "Perth, Australia",
 						"description" : "example description, example description,example description," + 
 							"example description,example description,example description."		
 						}				
@@ -291,3 +291,6 @@ bio.display();
 work.display();
 projects.display();
 education.display();
+
+$("#mapDiv").append(googleMap);
+

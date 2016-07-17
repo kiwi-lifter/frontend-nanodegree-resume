@@ -106,33 +106,155 @@ https://developers.google.com/maps/documentation/javascript/reference
 */
 var map;    // declares a global map variable
 
-
 /*
 Start here! initializeMap() is called when page is loaded.
 */
 function initializeMap() {
 
-  var locations;
-
+  // array for work and education map locations
+  var locations =[];
+  // map style arrays
+  var styles = [
+    {
+        "featureType": "administrative.country",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.province",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.locality",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.neighborhood",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "administrative.land_parcel",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "landscape",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#7f7b7b"
+            }
+        ]
+    },
+    {
+        "featureType": "poi",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#ffffff"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "geometry",
+        "stylers": [
+            {
+                "visibility": "on"
+            }
+        ]
+    },
+    {
+        "featureType": "road",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "transit",
+        "elementType": "all",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "all",
+        "stylers": [
+            {
+                "color": "#000000"
+            }
+        ]
+    },
+    {
+        "featureType": "water",
+        "elementType": "labels",
+        "stylers": [
+            {
+                "visibility": "off"
+            }
+        ]
+    }
+]
+  // StyleMapType object 
+  var styledMap = new google.maps.StyledMapType(styles,
+    {name: "Lived & Worked"});
+	
+  // Map object
   var mapOptions = {
-    disableDefaultUI: true
+    mapTypeControlOptions: {
+      mapTypeIds: [google.maps.MapTypeId.ROADMAP, 'map_style']
+    }
   };
-
-  /* 
-  For the map to be displayed, the googleMap var must be
-  appended to #mapDiv in resumeBuilder.js. 
-  */
-  map = new google.maps.Map(document.querySelector('#map'), mapOptions);
-
-
+  map = new google.maps.Map(document.getElementById('map'),
+    mapOptions);
+	
+  map.mapTypes.set('map_style', styledMap);
+  map.setMapTypeId('map_style');
+  
   /*
   locationFinder() returns an array of every location string from the JSONs
   written for bio, education, and work.
   */
+  
   function locationFinder() {
-
-    // initializes an empty array
-    var locations = [];
 
     // adds the single location property from bio to the locations array
     locations.push(bio.contacts.location);
@@ -161,8 +283,8 @@ function initializeMap() {
   placeData is the object returned from search results containing information
   about a single location.
   */
+  
   function createMapMarker(placeData) {
-
     // The next lines save location data from the search result object to local variables
     var lat = placeData.geometry.location.lat();  // latitude from the place service
     var lon = placeData.geometry.location.lng();  // longitude from the place service
@@ -170,12 +292,21 @@ function initializeMap() {
     var bounds = window.mapBounds;            // current boundaries of the map window
 
     // marker is an object with additional data about the pin for a single location
-    var marker = new google.maps.Marker({
+    var markerImage = {
+		url: 'images/red-pointer.svg',
+		scaledSize: new google.maps.Size(20, 21), // scaled size
+	};
+	
+	var marker = new google.maps.Marker({
       map: map,
       position: placeData.geometry.location,
-      title: name
+      title: name,
+	  animation: google.maps.Animation.DROP,
+	  icon: markerImage
     });
-
+	
+	
+	
     // infoWindows are the little helper windows that open when you click
     // or hover over a pin on a map. They usually contain more information
     // about a location.
@@ -184,10 +315,11 @@ function initializeMap() {
     });
 
     // hmmmm, I wonder what this is about...
-    google.maps.event.addListener(marker, 'click', function() {
-      // your code goes here!
+    google.maps.event.addListener(marker, 'click', function() { 
+	  infoWindow.open(map, marker);
     });
-
+	
+	window.setTimeout(function() { }, 5000);
     // this is where the pin actually gets added to the map.
     // bounds.extend() takes in a map location object
     bounds.extend(new google.maps.LatLng(lat, lon));
@@ -201,6 +333,7 @@ function initializeMap() {
   callback(results, status) makes sure the search returned results for a location.
   If so, it creates a new map marker for that location.
   */
+  
   function callback(results, status) {
     if (status == google.maps.places.PlacesServiceStatus.OK) {
       createMapMarker(results[0]);
@@ -212,7 +345,6 @@ function initializeMap() {
   and fires off Google place searches for each location
   */
   function pinPoster(locations) {
-
     // creates a Google place search service object. PlacesService does the work of
     // actually searching for location data.
     var service = new google.maps.places.PlacesService(map);
@@ -227,6 +359,7 @@ function initializeMap() {
       // Actually searches the Google Maps API for location data and runs the callback
       // function with the search results after each search.
       service.textSearch(request, callback);
+	 
     });
   }
 
@@ -242,16 +375,12 @@ function initializeMap() {
 
 }
 
-/*
-Uncomment the code below when you're ready to implement a Google Map!
-*/
-
 // Calls the initializeMap() function when the page loads
-//window.addEventListener('load', initializeMap);
+window.addEventListener('load', initializeMap);
 
 // Vanilla JS way to listen for resizing of the window
 // and adjust map bounds
-//window.addEventListener('resize', function(e) {
-  //Make sure the map bounds get updated on page resize
-//  map.fitBounds(mapBounds);
-//});
+window.addEventListener('resize', function(e) {
+	//Make sure the map bounds get updated on page resize
+	map.fitBounds(mapBounds);
+});
