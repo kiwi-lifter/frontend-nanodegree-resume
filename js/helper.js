@@ -12,46 +12,47 @@ Cameron Pittman
 These are HTML strings. As part of the course, you'll be using JavaScript functions
 replace the %data% placeholder text you see in them.
 */
-var HTMLheaderName = '<h1 id="name">%data%</h1>';
-var HTMLheaderRole = '<span>%data%</span><hr>';
+var HTMLheaderName = '<div class="jumbotron"><h1 id="name">%data%</h1>';
+var HTMLheaderRole = '<h2>%data%</h2>';
+var HTMLwelcomeMsg = '<span>%data%</span></div>';
 
-var HTMLcontactGeneric = '<li class="flex-item"><span class="orange-text">%contact%</span><span class="white-text">%data%</span></li>';
-var HTMLmobile = '<li class="flex-item"><span class="orange-text">mobile</span><span class="white-text">%data%</span></li>';
-var HTMLemail = '<li class="flex-item"><span class="orange-text">email</span><span class="white-text">%data%</span></li>';
-var HTMLtwitter = '<li class="flex-item"><span class="orange-text">twitter</span><span class="white-text">%data%</span></li>';
-var HTMLgithub = '<li class="flex-item"><span class="orange-text">github</span><span class="white-text">%data%</span></li>';
-var HTMLblog = '<li class="flex-item"><span class="orange-text">blog</span><span class="white-text">%data%</span></li>';
-var HTMLlocation = '<li class="flex-item"><span class="orange-text">location</span><span class="white-text">%data%</span></li>';
+//var HTMLcontactGeneric = '<h3 class="no-top-margin">Get In Touch:</h3><li class="list-group-item"><span class="">%contact%</span><span class="">%data%</span></li>';
+var HTMLmobile = '<li class="list-group-item"><span class="">mobile</span><span class="">%data%</span></li>';
+var HTMLemail = '<li class="list-group-item"><span class="">email</span><span class="">%data%</span></li>';
+var HTMLtwitter = '<li class="list-group-item"><span class="">twitter</span><span class="">%data%</span></li>';
+var HTMLgithub = '<li class="list-group-item"><span class="">github</span><span class="">%data%</span></li>';
+var HTMLblog = '<li class="list-group-item"><span class="">blog</span><span class="">%data%</span></li>';
+var HTMLlocation = '<li class="list-group-item"><span class="">location</span><span class="">%data%</span></li>';
 
-var HTMLbioPic = '<img src="%data%" class="biopic">';
-var HTMLwelcomeMsg = '<span class="welcome-message">%data%</span>';
+var HTMLbioPic = '<img src="%data%" class="img-thumbnail">';
 
-var HTMLskillsStart = '<h3 id="skills-h3">Skills at a Glance:</h3><ul id="skills" class="flex-box"></ul>';
-var HTMLskills = '<li class="flex-item"><span class="white-text">%data%</span></li>';
+var HTMLskillsStart = '<h3 class="no-top-margin">Skills at a Glance:</h3><ul id="skills" class="list-group"></ul>';
+var HTMLskills = '<li class="list-group-item"><span class="white-text">%data%</span></li>';
 
-var HTMLworkStart = '<div class="work-entry"></div>';
-var HTMLworkEmployer = '<a>%data%';
-var HTMLworkTitle = ' - %data% </a>';
+var HTMLworkStart = '<div class="work-entry panel panel-info"></div>';
+//var HTMLworkEmployer = '<a>%data%';
+var HTMLworkTitle = ' - %data%</a></h4></div>';
+
 var HTMLworkDates = '<div class="date-text">%data%</div>';
 var HTMLworkLocation = '<div class="location-text">%data%</div>';
 var HTMLworkDescription = '<p><br>%data%</p>';
 
-var HTMLprojectStart = '<div class="project-entry"></div>';
+var HTMLprojectStart = '<div class="project-entry col-xs-4 col-sm-4 col-md-4"></div>';
 var HTMLprojectTitle = '<a href="#">%data%</a>';
 var HTMLprojectDates = '<div class="date-text">%data%</div>';
 var HTMLprojectDescription = '<p><br>%data%</p>';
-var HTMLprojectImage = '<img src="%data%">';
+var HTMLprojectImage = '<img src="%data%" class="img-thumbnail center-block"></a>';
 
-var HTMLschoolStart = '<div class="education-entry"></div>';
-var HTMLschoolName = '<a href="#">%data%';
-var HTMLschoolDegree = ' -- %data%</a>';
+var HTMLschoolStart = '<div class="education-entry panel panel-info"></div>';
+//var HTMLschoolName = '<a href="#">%data%';
+var HTMLschoolDegree = ' -- %data%</a></h4>';
 var HTMLschoolDates = '<div class="date-text">%data%</div>';
 var HTMLschoolLocation = '<div class="location-text">%data%</div>';
 var HTMLschoolMajors = '<em><br>Major: %data%</em>';
 
 var HTMLonlineClasses = '<h3>Online Classes</h3>';
-var HTMLonlineTitle = '<a href="#">%data%';
-var HTMLonlineSchool = ' - %data%</a>';
+//var HTMLonlineTitle = '<a href="#">%data%';
+var HTMLonlineSchool = ' - %data%</a></h4>';
 var HTMLonlineDates = '<div class="date-text">%data%</div>';
 var HTMLonlineURL = '<br><a href="#">%data%</a>';
 
@@ -319,7 +320,7 @@ function initializeMap() {
 	  infoWindow.open(map, marker);
     });
 	
-	window.setTimeout(function() { }, 5000);
+	//window.setTimeout(function() { }, 5000);
     // this is where the pin actually gets added to the map.
     // bounds.extend() takes in a map location object
     bounds.extend(new google.maps.LatLng(lat, lon));
