@@ -107,42 +107,57 @@ var projects = {
 	"projects" :[	{ 	"title" : "example 1 project",
 						"dates" : "2016",
 						"description" : "Udacity Front End Web Developer nano degree - portfolio.",
-						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
+						"images" : ["http://placehold.it/175x175", "http://placehold.it/175x175", "http://placehold.it/125x125"]
+						/**
+						"images" : [ 	"large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
 											"small" : "http://placehold.it/125x125"
 										}
 									]
+									**/
 					},
 					{ 	"title" : "example 2 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
+						"images" : ["http://placehold.it/175x175", "http://placehold.it/175x175", "http://placehold.it/125x125"]
+						/**
 						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
 											"small" : "http://placehold.it/125x125"
 										}
 									]
+									**/
 					},
 					{ 	"title" : "example 3 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
+						"images" : ["http://placehold.it/175x175", "http://placehold.it/175x175", "http://placehold.it/125x125"]
+						/**
 						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
 											"small" : "http://placehold.it/125x125"
 										}
 									]
+									**/
 					},
 					{ 	"title" : "example 4 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
-						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
+						"images" : ["http://placehold.it/175x175", "http://placehold.it/175x175", "http://placehold.it/125x125"]
+						/**
+						"images" :	[ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175",
 											"small" : "http://placehold.it/125x125"
 										}
 									]
+									**/
 					},
 					{ 	"title" : "example 5 project",
 						"dates" : "2015",
 						"description" : "Udacity Front End Web Developer nano degree - resume.",
+						"images" : ["http://placehold.it/175x175", "http://placehold.it/175x175", "http://placehold.it/125x125"]
+						/**
 						"images" : [ 	{ "large" : ["http://placehold.it/175x175", "http://placehold.it/175x175"],
 											"small" : "http://placehold.it/125x125"
 										}
 									]
+									**/
 					}
 	],
 	"display" : function display(){
@@ -155,24 +170,32 @@ var projects = {
 			
 			// project modal div id number incremented by 1
 			countProjects++;
-				
 			// display project link button and small image
 			// html for project button 
 			var projectLink = '<a href="#project'+countProjects+'" data-toggle="modal">';
 			// display html		
 			$("#projects").append(HTMLprojectStart);	
+			
+			// get url for small image from images array
+			
+			var projectImages = HTMLprojectImage.replace("%data%", project.images[2]);
+			$(".project-entry:last").append(projectLink+projectImages);
+
+			/**
 			// get url for small image from images array
 			project.images.forEach(function(image){
 				// get small image url and html for projects list
 				var projectImages = HTMLprojectImage.replace("%data%", image.small);
 				$(".project-entry:last").append(projectLink+projectImages);
 			}); //end forEach images small
-				
+			**/	
 			
 			// var to hold large images url link
 			var projectLargeImages ="";
+			/**
 			// display project modal with title, date, description, 2 large images
 			project.images.forEach(function(image){
+				
 				var imagesLength = image.large.length;
 				var count;
 				// loop through large images array 
@@ -180,8 +203,13 @@ var projects = {
 					// create html img tags with urls from the large images array
 					projectLargeImages = projectLargeImages + '<img src="' + image.large[count] + '" class="img-thumbnail">';					
 				}// end for
+				
+		
 			}); // end forEach images large
+			**/
 			
+			projectLargeImages = '<img src="' + project.images[0] + '" class="img-thumbnail">' + '<img src="' + project.images[1] + '" class="img-thumbnail">';
+				
 			// html content for project modal
 			var modalStart = '<div id="project'+countProjects+'" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="project '+countProjects+'" aria-hidden="true">';
 			var modalTitleAndCloseButton = '<div class="modal-dialog" role="document"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><h4 class="modal-title" id="gridModalLabel">'+project.title+'</h4></div>';
